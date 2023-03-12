@@ -3,6 +3,8 @@ import 'package:app_oficina/app/views/donos_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'home_page_view.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
@@ -63,7 +65,7 @@ class LoginPageState extends State<LoginPage> {
                 if (await _loginPageController.permitirLogin(usuario, senha)) {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => DonosPage()
+                      builder: (context) => HomePage()
                       )
                   );
                 }
