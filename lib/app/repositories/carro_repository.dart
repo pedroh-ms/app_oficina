@@ -16,33 +16,37 @@ class CarroRepository {
     return carros;
   }
 
-  Future<List<CarroDonoModel>> getComDonos() async {
+  Future<List<CarroDonoModel>> getWithDonos() async {
     final response = await http.get(Uri.http(URL, URN, {'query_type': 'with_donos'}));
     List<CarroDonoModel> carros = (jsonDecode(response.body)['data'] as List).map((json) => CarroDonoModel.fromJson(json)).toList();
     return carros;
   }
 
   Future<void> post(CarroModel carro) async {
+    final body = carro.toJson();
+    body.remove('id');
     await http.post(
       Uri.http(URL, URN),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, Map>{
-        'carro': carro.toJson().remove("id")
+        'carro': body
         }
       )
     );
   }
 
   Future<void> put(CarroModel carro) async {
+    final body = carro.toJson();
+    body.remove('id');
     await http.put(
       Uri.http(URL, '$URN/${carro.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, Map>{
-        'carro': carro.toJson().remove("id")
+        'carro': body
         }
       )
     );

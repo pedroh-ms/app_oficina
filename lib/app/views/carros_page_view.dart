@@ -1,3 +1,4 @@
+import 'package:app_oficina/app/views/inserir_carro_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -23,7 +24,7 @@ class CarrosPageState extends State<CarrosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Donos'),
+        title: const Text('Carros'),
         actions: [
           IconButton(
             onPressed: () {
@@ -83,6 +84,17 @@ class CarrosPageState extends State<CarrosPage> {
             )
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final donos = await _controller.getDonos();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => InserirCarroPage(donos: donos)
+            )
+          );
+        },
+        child: const Icon(Icons.add)
       ),
     );
   }
