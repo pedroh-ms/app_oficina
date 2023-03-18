@@ -5,7 +5,7 @@ import '../models/dono_model.dart';
 
 class DonoRepository {
 
-  final URL = 'ed6f-177-221-248-246.ngrok.io';
+  final URL = '192.168.0.105:4000';
   final URN = 'api/donos';
 
   Future<List<DonoModel>> get() async {
