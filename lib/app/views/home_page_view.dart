@@ -1,3 +1,4 @@
+import 'package:app_oficina/app/views/carros_page_view.dart';
 import 'package:flutter/material.dart';
 
 import 'donos_page_view.dart';
@@ -26,6 +27,15 @@ class HomePageState extends State<HomePage> {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => DonosPage()
+                )
+              ),
+            ),
+            ListTile(
+              title: Text('Carros'),
+              subtitle: Text('Gerenciar ou adicionar carros'),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CarrosPage()
                 )
               ),
             )

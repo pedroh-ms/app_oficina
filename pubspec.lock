@@ -139,6 +139,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
+  searchfield:
+    dependency: "direct main"
+    description:
+      name: searchfield
+      sha256: deb363c95b9e64ea9ffd1a3b69926b0fe0344daedab872fc42014755a8199de9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.5"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -210,3 +218,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=3.0.0-257.0.dev <4.0.0"
+  flutter: ">=1.17.0"
