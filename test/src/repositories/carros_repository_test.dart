@@ -5,7 +5,7 @@ void main(){
   final carroRepository = CarroRepository();
 
   test('deve trazer uma lista de DonoModel', () async {
-    final carros = await carroRepository.getComDonos();
+    final carros = await carroRepository.getWithDonos();
     for(var i = 0; i < carros.length; i++){
       print(carros[i].toJson());
     }
