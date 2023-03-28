@@ -1,4 +1,5 @@
 import 'package:app_oficina/app/views/carros_page_view.dart';
+import 'package:app_oficina/app/views/servicos_page_view.dart';
 import 'package:flutter/material.dart';
 
 import 'donos_page_view.dart';
@@ -38,6 +39,15 @@ class HomePageState extends State<HomePage> {
                   builder: (context) => CarrosPage()
                 )
               ),
+            ),
+            ListTile(
+              title: Text('Servicos'),
+              subtitle: Text('Gerenciar ou adicionar servicos'),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ServicosPage()
+                )
+              )
             )
           ],
         ),
