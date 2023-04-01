@@ -1,4 +1,5 @@
 import 'package:app_oficina/app/views/carros_page_view.dart';
+import 'package:app_oficina/app/views/material_comprados_page_view.dart';
 import 'package:app_oficina/app/views/servicos_page_view.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +49,14 @@ class HomePageState extends State<HomePage> {
                   builder: (context) => ServicosPage()
                 )
               )
+            ),
+            ListTile(
+              title: Text('Materiais comprados'),
+              subtitle: Text('Gerenciar ou acicionar materiais comprados'),
+              onTap:() => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MaterialCompradosPage())
+              ),
             )
           ],
         ),
