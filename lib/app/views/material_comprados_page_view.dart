@@ -1,4 +1,5 @@
 import 'package:app_oficina/app/controllers/material_comprados_page_controller.dart';
+import 'package:app_oficina/app/views/inserir_material_comprado_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -84,9 +85,11 @@ class MaterialCompradosPageState extends State<MaterialCompradosPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          
-        },
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => InserirMaterialCompradoPage()
+          )
+        ),
         child: const Icon(Icons.add)
       ),
     );
