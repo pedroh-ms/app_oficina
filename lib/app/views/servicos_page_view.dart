@@ -1,3 +1,5 @@
+import 'package:app_oficina/app/views/gerenciar_servico_page_view.dart';
+import 'package:app_oficina/app/views/inserir_servico_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -85,7 +87,25 @@ class ServicosPageState extends State<ServicosPage> {
                           DataCell(
                             Text(servico.carro!.nome.toString())
                           )
-                        ]
+                        ],
+                        onSelectChanged:(value) async {
+                          final donos = await _controller.getDonos();
+                          final carros = await _controller.getCarros();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:(context) => GerenciarServicoPage(
+                                id: servico.id,
+                                dataEntrega: servico.dataEntrega,
+                                preco: servico.preco,
+                                observacao: servico.observacao,
+                                carro: servico.carro,
+                                dono: servico.dono,
+                                carros: carros,
+                                donos: donos
+                              ),
+                            )
+                          );
+                        },
                       )
                     ).toList(),
                     showCheckboxColumn: false,
@@ -95,6 +115,18 @@ class ServicosPageState extends State<ServicosPage> {
             )
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final donos = await _controller.getDonos();
+          final carros = await _controller.getCarros();
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => InserirServicoPage(donos: donos, carros: carros)
+            )
+          );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

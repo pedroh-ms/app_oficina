@@ -32,7 +32,7 @@ class ServicoRepository {
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, Map>{
-        'dono': body
+        'servico': body
         }
       )
     );
@@ -47,7 +47,7 @@ class ServicoRepository {
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, Map>{
-        'dono': body
+        'servico': body
         }
       )
     );
