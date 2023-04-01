@@ -3,10 +3,10 @@ import 'package:app_oficina/app/repositories/material_comprado_repository.dart';
 
 class InserirMaterialCompradoPageController {
 
-  Future<bool> insert(Map<String, dynamic> material_comprado) async {
+  Future<bool> insert(Map<String, dynamic> materialComprado) async {
     final repository = MaterialCompradoRepository();
     try {
-      await repository.post(MaterialCompradoModel.fromJson(material_comprado));
+      await repository.post(MaterialCompradoModel.fromJson(materialComprado));
       return true;
     } catch (e) {
       return false;

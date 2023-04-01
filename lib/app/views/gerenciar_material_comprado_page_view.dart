@@ -1,23 +1,37 @@
-import 'package:app_oficina/app/controllers/inserir_material_comprado_page_controller.dart';
-import 'package:app_oficina/app/models/material_comprado_model.dart';
+import 'package:app_oficina/app/controllers/gerenciar_material_comprado_page_controller.dart';
 import 'package:currency_textfield/currency_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-class InserirMaterialCompradoPage extends StatefulWidget {
+import '../models/material_comprado_model.dart';
+
+class GerenciarMaterialCompradoPage extends StatefulWidget {
+
+  final MaterialCompradoModel? materialComprado;
+
+  const GerenciarMaterialCompradoPage({this.materialComprado});
 
   @override
-  InserirMaterialCompradoPageState createState() => InserirMaterialCompradoPageState();
+  GerenciarMaterialCompradoPageState createState() => GerenciarMaterialCompradoPageState(materialComprado);
 }
 
-class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage> {
+class GerenciarMaterialCompradoPageState extends State<GerenciarMaterialCompradoPage> {
 
-  final materialComprado = MaterialCompradoModel();
+  late MaterialCompradoModel materialComprado;
 
-  final _inserirMaterialCompradoPageController = InserirMaterialCompradoPageController();
+  final _inserirMaterialCompradoPageController = GerenciarMaterialCompradoPageController();
 
+  final _nomeController = TextEditingController();
   final _diaController = TextEditingController();
   final _precoController = CurrencyTextFieldController(currencySymbol: 'R\$', decimalSymbol: ',', thousandSymbol: '.');
+
+  GerenciarMaterialCompradoPageState(MaterialCompradoModel? materialComprado) {
+    this.materialComprado = materialComprado ?? MaterialCompradoModel();
+    _nomeController.text = materialComprado?.nome ?? '';
+    _diaController.text = materialComprado?.dia ?? '';
+    _precoController.text = materialComprado?.preco ?? '';
+  }
 
   Future<void> _showDiaDatePicker() async {
     showDatePicker(
@@ -32,14 +46,18 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
     });
   }
 
-  Future<void> _insert() async {
-    final ret = await _inserirMaterialCompradoPageController.insert(materialComprado.toJson());
+  Future<void> _save() async {
+    final ret = await _inserirMaterialCompradoPageController.save(materialComprado.toJson());
+  }
+
+  Future<void> _delete() async {
+    final ret = await _inserirMaterialCompradoPageController.delete(materialComprado.id!);
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inserir material comprado'),
+        title: const Text('Gerenciar material comprado'),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -49,6 +67,7 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
+                controller: _nomeController,
                 onChanged: (nome) => materialComprado.nome = nome,
                 decoration: InputDecoration(
                   labelText: 'Nome',
@@ -85,9 +104,21 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
               SizedBox(
                 height: 5,
               ),
-              ElevatedButton(
-                onPressed: () async => await _insert(),
-                child: Text('Inserir')
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async => await _save(),
+                    child: Text('Salvar')
+                  ),
+                  SizedBox(
+                    width: 5
+                  ),
+                  ElevatedButton(
+                    onPressed: () async => await _delete(), 
+                    child: Text('Deletar')
+                  )
+                ],
               )
             ],
           )
