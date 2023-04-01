@@ -77,7 +77,7 @@ class GerenciarServicoPageState extends State<GerenciarServicoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inserir servico')
+        title: const Text('Gerenciar servico')
       ),
       body: SingleChildScrollView(
         child: SizedBox(
