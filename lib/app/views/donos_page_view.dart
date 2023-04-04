@@ -1,15 +1,13 @@
-import 'dart:convert';
-
 import 'package:app_oficina/app/controllers/donos_page_controller.dart';
 import 'package:app_oficina/app/views/gerenciar_dono_page_view.dart';
 import 'package:app_oficina/app/views/inserir_dono_page_view.dart';
 import 'package:flutter/material.dart';
 
 class DonosPage extends StatefulWidget{
+  const DonosPage({super.key});
+  
   @override
-  DonosPageState createState() {
-    return DonosPageState();
-  }
+  DonosPageState createState() => DonosPageState();
 }
 
 class DonosPageState extends State<DonosPage> {
@@ -72,11 +70,7 @@ class DonosPageState extends State<DonosPage> {
                         ],
                         onSelectChanged: (value) => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => GerenciarDonoPage(
-                              id: dono.id,
-                              nome: dono.nome,
-                              numeroCelular: dono.numeroCelular,
-                            )
+                            builder: (context) => GerenciarDonoPage(dono: dono)
                           )
                         )
                       )).toList(),
@@ -91,7 +85,7 @@ class DonosPageState extends State<DonosPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => InserirDonoPage()
+            builder: (context) => const InserirDonoPage()
           )
         ),
         child: const Icon(Icons.add)

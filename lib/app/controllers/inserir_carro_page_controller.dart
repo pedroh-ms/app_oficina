@@ -5,17 +5,10 @@ import '../models/carro_model.dart';
 import '../models/dono_model.dart';
 
 class InserirCarroPageController {
-  Future<bool> inserir(Map carro) async {
+  Future<bool> insert(Map<String, dynamic> carro) async {
     final repository = CarroRepository();
     try {
-      await repository.post(
-        CarroModel(
-          id: null,
-          nome: carro['nome'],
-          cor: carro['cor'],
-          donoId: carro['dono']
-        )
-      );
+      await repository.post(CarroModel.fromJson(carro));
       return true;
     } catch (e) {
       return false;

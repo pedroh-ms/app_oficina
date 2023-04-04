@@ -3,7 +3,7 @@ import '../repositories/carro_repository.dart';
 
 class GerenciarCarroPageController {
 
-  Future<bool> salvar(Map<String, dynamic> carro) async {
+  Future<bool> save(Map<String, dynamic> carro) async {
     final repository = CarroRepository();
     try {
       await repository.put(CarroModel.fromJson(carro));
@@ -13,7 +13,7 @@ class GerenciarCarroPageController {
     }
   }
 
-  Future<bool> deletar(int id) async {
+  Future<bool> delete(int id) async {
     final repository = CarroRepository();
     try {
       await repository.delete(id);

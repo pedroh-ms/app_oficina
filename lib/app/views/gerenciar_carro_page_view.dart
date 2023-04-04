@@ -1,3 +1,5 @@
+import 'package:app_oficina/app/models/carro_dono_model.dart';
+import 'package:app_oficina/app/models/carro_model.dart';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
 
@@ -6,45 +8,47 @@ import '../models/dono_model.dart';
 
 class GerenciarCarroPage extends StatefulWidget {
   
-  final int? id;
-  final String? nome;
-  final String? cor;
-  final DonoModel? dono;
+  final CarroDonoModel? carro;
   final List<DonoModel>? donos;
 
-  GerenciarCarroPage({this.id, this.nome, this.cor, this.dono, this.donos});
+  const GerenciarCarroPage({super.key, this.carro, this.donos});
 
   @override
-  GerenciarCarroPageState createState() => GerenciarCarroPageState(id, nome, cor, dono, donos);
+  GerenciarCarroPageState createState() => GerenciarCarroPageState(carro, donos);
 }
 
 class GerenciarCarroPageState extends State<GerenciarCarroPage> {
   
+  late CarroModel carro;
+  late DonoModel dono;
+  List<DonoModel>? donos;
+
   final _nomeController = TextEditingController();
   final _corController = TextEditingController();
   final _gerenciarCarroPageController = GerenciarCarroPageController();
 
-  int? id;
-  String nome = '';
-  String cor = '';
-  late DonoModel dono;
-  List<DonoModel>? donos;
+  GerenciarCarroPageState(CarroDonoModel? carro, this.donos) {
+    
+    this.carro = carro?.toCarroModel() ?? CarroModel();
+    dono = carro!.dono!;
 
-  GerenciarCarroPageState(int? id, String? nome, String? cor, DonoModel? dono, List<DonoModel>? donos) {
-    _nomeController.text = nome != null ? nome : '';
-    _corController.text = cor != null ? cor : '';
-    this.id = id;
-    this.nome = _nomeController.text;
-    this.cor = _corController.text;
-    this.dono = dono as DonoModel;
-    this.donos = donos;
+    _nomeController.text = carro.nome ?? '';
+    _corController.text = carro.cor ?? '';
   }
 
+  Future<void> _save() async {
+    await _gerenciarCarroPageController.save(carro.toJson());
+  }
 
+  Future<void> _delete() async {
+    await _gerenciarCarroPageController.delete(carro.id!);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inserir carro')
+        title: const Text('Gerenciar carro')
       ),
       body: SingleChildScrollView(
         child: SizedBox(
@@ -55,28 +59,24 @@ class GerenciarCarroPageState extends State<GerenciarCarroPage> {
             children: [
               TextField(
                 controller: _nomeController,
-                onChanged: (text) {
-                  nome = text;
-                },
-                decoration: InputDecoration(
+                onChanged: (text) => carro.nome = text,
+                decoration: const InputDecoration(
                   labelText: 'Nome',
                   border: OutlineInputBorder()
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               TextField(
                 controller: _corController,
-                onChanged: (text) {
-                  cor = text;
-                },
-                decoration: InputDecoration(
+                onChanged: (text) => carro.cor = text,
+                decoration: const InputDecoration(
                   labelText: 'Cor',
                   border: OutlineInputBorder()
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               SearchField<DonoModel>(
@@ -93,7 +93,7 @@ class GerenciarCarroPageState extends State<GerenciarCarroPage> {
                       child: Text(e.nome as String)
                     )
                   ).toList(),
-                searchInputDecoration: InputDecoration(
+                searchInputDecoration: const InputDecoration(
                   labelText: 'Dono',
                   border: OutlineInputBorder()
                 ),
@@ -101,30 +101,22 @@ class GerenciarCarroPageState extends State<GerenciarCarroPage> {
                   dono = e.item as DonoModel;
                 },
               ),
+              const SizedBox(
+                height: 5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () async {
-                      await _gerenciarCarroPageController.salvar(
-                        <String, dynamic>{
-                          'id': id,
-                          'nome': nome,
-                          'cor': cor,
-                          'dono_id': dono.id
-                        }
-                      );
-                    },
-                    child: Text('Salvar')
+                    onPressed: () async => await _save(),
+                    child: const Text('Salvar')
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   ElevatedButton(
-                    onPressed: () async {
-                      await _gerenciarCarroPageController.deletar(id as int);
-                    },
-                    child: Text('Deletar')
+                    onPressed: () async => await _delete(),
+                    child: const Text('Deletar')
                   )
                 ],
               ),

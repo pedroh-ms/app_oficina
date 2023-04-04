@@ -1,11 +1,12 @@
+import 'package:app_oficina/app/controllers/carros_page_controller.dart';
+import 'package:app_oficina/app/models/carro_dono_model.dart';
 import 'package:app_oficina/app/views/gerenciar_carro_page_view.dart';
 import 'package:app_oficina/app/views/inserir_carro_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-import '../controllers/carros_page_controller.dart';
 
 class CarrosPage extends StatefulWidget {
+  const CarrosPage({super.key});
+
   @override
   CarrosPageState createState() {
     return CarrosPageState ();
@@ -19,6 +20,31 @@ class CarrosPageState extends State<CarrosPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _manage(CarroDonoModel carro) async {
+    _controller.getDonos().then(
+      (donos) => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => GerenciarCarroPage(
+            carro: carro,
+            donos: donos
+          )
+        )
+      )
+    );
+  }
+
+  Future<void> _add() async {
+    _controller.getDonos().then(
+      (donos) => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => InserirCarroPage(
+            donos: donos
+          )
+        )
+      )
+    );
   }
 
   @override
@@ -76,20 +102,7 @@ class CarrosPageState extends State<CarrosPage> {
                             Text(carro.dono!.nome.toString())
                           )
                         ],
-                        onSelectChanged: (value) async {
-                          final donos = await _controller.getDonos();
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => GerenciarCarroPage(
-                                id: carro.id,
-                                nome: carro.nome,
-                                cor: carro.cor,
-                                dono: carro.dono,
-                                donos: donos
-                              )
-                            )
-                          );
-                        }
+                        onSelectChanged: (value) async => await _manage(carro)
                       )
                     ).toList(),
                     showCheckboxColumn: false,
@@ -101,14 +114,7 @@ class CarrosPageState extends State<CarrosPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final donos = await _controller.getDonos();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => InserirCarroPage(donos: donos)
-            )
-          );
-        },
+        onPressed: () async => await _add(),
         child: const Icon(Icons.add)
       ),
     );

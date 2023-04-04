@@ -7,17 +7,17 @@ import '../models/carro_dono_model.dart';
 
 class CarroRepository {
 
-  final URL = '192.168.0.105:4000';
-  final URN = 'api/carros';
+  final _url = '192.168.0.105:4000';
+  final _urn = 'api/carros';
 
   Future<List<CarroModel>> get() async {
-    final response = await http.get(Uri.http(URL, URN));
+    final response = await http.get(Uri.http(_url, _urn));
     List<CarroModel> carros = (jsonDecode(response.body)['data'] as List).map((json) => CarroModel.fromJson(json)).toList();
     return carros;
   }
 
   Future<List<CarroDonoModel>> getWithDonos() async {
-    final response = await http.get(Uri.http(URL, URN, {'query_type': 'with_donos'}));
+    final response = await http.get(Uri.http(_url, _urn, {'query_type': 'with_donos'}));
     List<CarroDonoModel> carros = (jsonDecode(response.body)['data'] as List).map((json) => CarroDonoModel.fromJson(json)).toList();
     return carros;
   }
@@ -26,7 +26,7 @@ class CarroRepository {
     final body = carro.toJson();
     body.remove('id');
     await http.post(
-      Uri.http(URL, URN),
+      Uri.http(_url, _urn),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
@@ -41,7 +41,7 @@ class CarroRepository {
     final body = carro.toJson();
     body.remove('id');
     await http.put(
-      Uri.http(URL, '$URN/${carro.id}'),
+      Uri.http(_url, '$_urn/${carro.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
@@ -53,6 +53,6 @@ class CarroRepository {
   }
 
   Future<void> delete(int id) async {
-    await http.delete(Uri.http(URL, '$URN/$id'));
+    await http.delete(Uri.http(_url, '$_urn/$id'));
   }
 }

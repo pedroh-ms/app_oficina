@@ -1,37 +1,41 @@
 import 'package:app_oficina/app/controllers/gerenciar_dono_page_controller.dart';
+import 'package:app_oficina/app/models/dono_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class GerenciarDonoPage extends StatefulWidget {
 
-  final int? id;
-  final String? nome;
-  final String? numeroCelular;
+  final DonoModel? dono;
 
-  const GerenciarDonoPage({this.id, this.nome, this.numeroCelular});
+  const GerenciarDonoPage({super.key, this.dono});
 
   @override
-  GerenciarDonoPageState createState() => GerenciarDonoPageState(id, nome, numeroCelular);
+  GerenciarDonoPageState createState() => GerenciarDonoPageState(dono);
 }
 
 class GerenciarDonoPageState extends State<GerenciarDonoPage> {
+
+  late DonoModel dono;
 
   final _nomeController = TextEditingController();
   final _numeroCelularController = TextEditingController();
   final _gerenciarDonoPageController = GerenciarDonoPageController();
 
-  int? id;
-  String nome = '';
-  String numeroCelular = '';
+  GerenciarDonoPageState(DonoModel? dono) {
+    this.dono = dono ?? DonoModel();
 
-  GerenciarDonoPageState(int? id, String? nome, String? numeroCelular) {
-    _nomeController.text = nome != null ? nome : '';
-    _numeroCelularController.text = numeroCelular != null ? numeroCelular : '';
-    this.id = id;
-    this.nome = _nomeController.text;
-    this.numeroCelular = _numeroCelularController.text;
+    _nomeController.text = dono?.nome ?? '';
+    _numeroCelularController.text = dono?.numeroCelular ?? '';
   }
 
+  Future<void> _save() async {
+    await _gerenciarDonoPageController.save(dono.toJson());
+  }
+
+  Future<void> _delete() async {
+    await _gerenciarDonoPageController.delete(dono.id!);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -46,53 +50,39 @@ class GerenciarDonoPageState extends State<GerenciarDonoPage> {
             children: [
               TextField(
                 controller: _nomeController,
-                onChanged: (text) {
-                  nome = text;
-                },
-                decoration: InputDecoration(
+                onChanged: (text) => dono.nome = text,
+                decoration: const InputDecoration(
                   labelText: 'Nome',
                   border: OutlineInputBorder()
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               TextField(
                 controller: _numeroCelularController,
-                onChanged: (text) {
-                  numeroCelular = text;
-                },
-                decoration: InputDecoration(
+                onChanged: (text) => dono.numeroCelular = text,
+                decoration: const InputDecoration(
                   labelText: 'Número do celular',
                   border: OutlineInputBorder()
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () async {
-                      await _gerenciarDonoPageController.salvar(
-                        <String, dynamic>{
-                          'id': id,
-                          'nome': nome,
-                          'numeroCelular': numeroCelular
-                        }
-                      );
-                    }, 
-                    child: Text('Salvar')
+                    onPressed: () async => await _save(), 
+                    child: const Text('Salvar')
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   ElevatedButton(
-                    onPressed: () async {
-                      await _gerenciarDonoPageController.deletar(id as int);
-                    }, 
-                    child: Text('Deletar')
+                    onPressed: () async => await _delete(), 
+                    child: const Text('Deletar')
                   )
                 ],
               )

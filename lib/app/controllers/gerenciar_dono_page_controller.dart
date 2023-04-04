@@ -3,23 +3,17 @@ import 'package:app_oficina/app/repositories/dono_repository.dart';
 
 class GerenciarDonoPageController {
 
-  Future<bool> salvar(Map dono) async {
+  Future<bool> save(Map<String, dynamic> dono) async {
     final repository = DonoRepository();
     try {
-      await repository.put(
-        DonoModel(
-          id: dono['id'],
-          nome: dono['nome'],
-          numeroCelular: dono['numeroCelular']
-        )
-      );
+      await repository.put(DonoModel.fromJson(dono));
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> deletar(int id) async {
+  Future<bool> delete(int id) async {
     final repository = DonoRepository();
     try {
       await repository.delete(id);

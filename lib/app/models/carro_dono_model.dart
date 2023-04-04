@@ -1,3 +1,5 @@
+import 'package:app_oficina/app/models/carro_model.dart';
+
 import 'dono_model.dart';
 
 class CarroDonoModel {
@@ -25,4 +27,11 @@ class CarroDonoModel {
     data['nome'] = this.nome;
     return data;
   }
+
+  CarroModel toCarroModel() => CarroModel.fromJson({
+    'id': id,
+    'nome': nome,
+    'cor': cor,
+    'dono_id': dono!.id
+  });
 }

@@ -5,48 +5,46 @@ import '../models/dono_model.dart';
 
 class DonoRepository {
 
-  final URL = '192.168.0.105:4000';
-  final URN = 'api/donos';
+  final _url = '192.168.0.105:4000';
+  final _urn = 'api/donos';
 
   Future<List<DonoModel>> get() async {
-    final response = await http.get(Uri.http(URL, URN));
+    final response = await http.get(Uri.http(_url, _urn));
     List<DonoModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => DonoModel.fromJson(json)).toList();
     return donos;
   }
 
   Future<void> post(DonoModel dono) async {
+    final body = dono.toJson();
+    body.remove('id');
     await http.post(
-      Uri.http(URL, URN),
+      Uri.http(_url, _urn),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, Map>{
-        'dono': <String, String>{
-          'nome': dono.nome as String,
-          'numero_celular': dono.numeroCelular as String
-          }
+        'dono': body
         }
       )
     );
   }
 
   Future<void> put(DonoModel dono) async {
+    final body = dono.toJson();
+    body.remove('id');
     await http.put(
-      Uri.http(URL, '$URN/${dono.id}'),
+      Uri.http(_url, '$_urn/${dono.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: jsonEncode(<String, Map>{
-        'dono': <String, String>{
-          'nome': dono.nome as String,
-          'numero_celular': dono.numeroCelular as String
-          }
+        'dono': body
         }
       )
     );
   }
 
   Future<void> delete(int id) async {
-    await http.delete(Uri.http(URL, '$URN/$id'));
+    await http.delete(Uri.http(_url, '$_urn/$id'));
   }
 }

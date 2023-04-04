@@ -70,7 +70,6 @@ class GerenciarServicoPageState extends State<GerenciarServicoPage> {
     Future.delayed(Duration.zero, () {
       _carroSearchFieldController.text = carro.nome as String;
       _donoSearchFieldController.text = dono.nome as String;
-      print("Hello");
     });
   }
 
