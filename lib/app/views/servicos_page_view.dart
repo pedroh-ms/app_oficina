@@ -1,11 +1,14 @@
+import 'package:app_oficina/app/controllers/servicos_page_controller.dart';
+import 'package:app_oficina/app/models/carro_model.dart';
+import 'package:app_oficina/app/models/dono_model.dart';
+import 'package:app_oficina/app/models/servico_dono_carro_model.dart';
 import 'package:app_oficina/app/views/gerenciar_servico_page_view.dart';
 import 'package:app_oficina/app/views/inserir_servico_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-import '../controllers/servicos_page_controller.dart';
 
 class ServicosPage extends StatefulWidget {
+  const ServicosPage({super.key});
+
   @override
   ServicosPageState createState() {
     return ServicosPageState();
@@ -19,6 +22,46 @@ class ServicosPageState extends State<ServicosPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _manage(ServicoDonoCarroModel servico) async {
+    Future.wait([_controller.getDonos(), _controller.getCarros()]).then(
+      (value) {
+        final donos = value[0].map((e) => e as DonoModel).toList();
+        final carros = value[1].map((e) => e as CarroModel).toList();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => GerenciarServicoPage(
+              id: servico.id,
+              dataEntrega: servico.dataEntrega,
+              preco: servico.preco,
+              observacao: servico.observacao,
+              carro: servico.carro,
+              dono: servico.dono,
+              carros: carros,
+              donos: donos
+            )
+          )
+        );   
+      }
+    );
+  }
+
+  Future<void> _add() async {
+    Future.wait([_controller.getDonos(), _controller.getCarros()]).then(
+      (value) {
+        final donos = value[0].map((e) => e as DonoModel).toList();
+        final carros = value[1].map((e) => e as CarroModel).toList();
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => InserirServicoPage(
+              donos: donos, 
+              carros: carros
+            )
+          )
+        );
+      }
+    );
   }
 
   @override
@@ -88,24 +131,7 @@ class ServicosPageState extends State<ServicosPage> {
                             Text(servico.carro!.nome.toString())
                           )
                         ],
-                        onSelectChanged:(value) async {
-                          final donos = await _controller.getDonos();
-                          final carros = await _controller.getCarros();
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:(context) => GerenciarServicoPage(
-                                id: servico.id,
-                                dataEntrega: servico.dataEntrega,
-                                preco: servico.preco,
-                                observacao: servico.observacao,
-                                carro: servico.carro,
-                                dono: servico.dono,
-                                carros: carros,
-                                donos: donos
-                              ),
-                            )
-                          );
-                        },
+                        onSelectChanged: (_) async => await _manage(servico)
                       )
                     ).toList(),
                     showCheckboxColumn: false,
@@ -117,15 +143,7 @@ class ServicosPageState extends State<ServicosPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final donos = await _controller.getDonos();
-          final carros = await _controller.getCarros();
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => InserirServicoPage(donos: donos, carros: carros)
-            )
-          );
-        },
+        onPressed: () async => await _add(),
         child: const Icon(Icons.add),
       ),
     );

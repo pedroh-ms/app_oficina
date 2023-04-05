@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InserirMaterialCompradoPage extends StatefulWidget {
+  const InserirMaterialCompradoPage({super.key});
 
   @override
   InserirMaterialCompradoPageState createState() => InserirMaterialCompradoPageState();
@@ -15,7 +16,6 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
   final materialComprado = MaterialCompradoModel();
 
   final _inserirMaterialCompradoPageController = InserirMaterialCompradoPageController();
-
   final _diaController = TextEditingController();
   final _precoController = CurrencyTextFieldController(currencySymbol: 'R\$', decimalSymbol: ',', thousandSymbol: '.');
 
@@ -25,17 +25,20 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
       initialDate: materialComprado.dia != null ? DateTime.parse(materialComprado.dia!) : DateTime.now(), 
       firstDate: DateTime(2000), 
       lastDate: DateTime(2101)
-    ).then((pickedDate) {
-      if (pickedDate == null) return;
-      materialComprado.dia = DateFormat('yyyy-MM-dd').format(pickedDate);
-      _diaController.text = materialComprado.dia!;
-    });
+    ).then(
+      (pickedDate) {
+        if (pickedDate == null) return;
+        materialComprado.dia = DateFormat('yyyy-MM-dd').format(pickedDate);
+        _diaController.text = materialComprado.dia!;
+      }
+    );
   }
 
   Future<void> _insert() async {
-    final ret = await _inserirMaterialCompradoPageController.insert(materialComprado.toJson());
+    await _inserirMaterialCompradoPageController.insert(materialComprado.toJson());
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -50,44 +53,44 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
             children: [
               TextField(
                 onChanged: (nome) => materialComprado.nome = nome,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nome',
                   border: OutlineInputBorder()
                 )
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               TextField(
                 controller: _diaController,
-                onChanged: (dia) => materialComprado.dia = dia,
-                decoration: InputDecoration(
+                onChanged: (text) => materialComprado.dia = text,
+                decoration: const InputDecoration(
                   labelText: 'Dia',
                   border: OutlineInputBorder()
                 ),
                 readOnly: true,
                 onTap: () async => await _showDiaDatePicker(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               TextField(
                 controller: _precoController,
                 maxLength: 11,
-                onChanged: (preco) => materialComprado.preco = preco.replaceAll(RegExp(r'[R$\s.]'), '').replaceFirst(',', '.'),
-                decoration: InputDecoration(
+                onChanged: (text) => materialComprado.preco = text.replaceAll(RegExp(r'[R$\s.]'), '').replaceFirst(',', '.'),
+                decoration: const InputDecoration(
                   labelText: 'Preço',
                   border: OutlineInputBorder(),
                   counterText: ''
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               ElevatedButton(
                 onPressed: () async => await _insert(),
-                child: Text('Inserir')
+                child: const Text('Inserir')
               )
             ],
           )

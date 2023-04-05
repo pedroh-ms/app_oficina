@@ -1,0 +1,4 @@
+enum ServicoDonoCarroEventEnum {
+  onPressed,
+  onSuggestionTap
+}
