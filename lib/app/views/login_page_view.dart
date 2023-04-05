@@ -1,11 +1,10 @@
 import 'package:app_oficina/app/controllers/login_page_controller.dart';
-import 'package:app_oficina/app/views/donos_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'home_page_view.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   LoginPageState createState() => LoginPageState();
 }
@@ -17,6 +16,20 @@ class LoginPageState extends State<LoginPage> {
 
   final _loginPageController = LoginPageController();
 
+  Future<void> _login() async {
+    _loginPageController.permitirLogin(usuario, senha).then(
+      (allow) {
+        if (allow) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HomePage()
+            )
+          );
+        }
+      }
+    );    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,25 +39,25 @@ class LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Login')
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
               onChanged: (text) {
                 usuario = text;
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Usuário',
                 border: OutlineInputBorder()
                 ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             TextField(
@@ -52,25 +65,17 @@ class LoginPageState extends State<LoginPage> {
                 senha = text;
               },
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Senha',
                 border: OutlineInputBorder()
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             ElevatedButton(
-              onPressed: () async {
-                if (await _loginPageController.permitirLogin(usuario, senha)) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => HomePage()
-                      )
-                  );
-                }
-              }, 
-              child: Text('Entrar')
+              onPressed: () async => await _login(), 
+              child: const Text('Entrar')
             )
           ],
         )

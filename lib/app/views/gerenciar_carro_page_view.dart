@@ -1,10 +1,8 @@
+import 'package:app_oficina/app/controllers/gerenciar_carro_page_controller.dart';
 import 'package:app_oficina/app/models/carro_dono_model.dart';
-import 'package:app_oficina/app/models/carro_model.dart';
+import 'package:app_oficina/app/models/dono_model.dart';
 import 'package:flutter/material.dart';
 import 'package:searchfield/searchfield.dart';
-
-import '../controllers/gerenciar_carro_page_controller.dart';
-import '../models/dono_model.dart';
 
 class GerenciarCarroPage extends StatefulWidget {
   
@@ -19,8 +17,7 @@ class GerenciarCarroPage extends StatefulWidget {
 
 class GerenciarCarroPageState extends State<GerenciarCarroPage> {
   
-  late CarroModel carro;
-  late DonoModel dono;
+  late CarroDonoModel carro;
   List<DonoModel>? donos;
 
   final _nomeController = TextEditingController();
@@ -28,16 +25,13 @@ class GerenciarCarroPageState extends State<GerenciarCarroPage> {
   final _gerenciarCarroPageController = GerenciarCarroPageController();
 
   GerenciarCarroPageState(CarroDonoModel? carro, this.donos) {
-    
-    this.carro = carro?.toCarroModel() ?? CarroModel();
-    dono = carro!.dono!;
-
-    _nomeController.text = carro.nome ?? '';
+    this.carro = carro ?? CarroDonoModel();
+    _nomeController.text = carro!.nome ?? '';
     _corController.text = carro.cor ?? '';
   }
 
   Future<void> _save() async {
-    await _gerenciarCarroPageController.save(carro.toJson());
+    await _gerenciarCarroPageController.save(carro.toCarroModel().toJson());
   }
 
   Future<void> _delete() async {
@@ -81,9 +75,9 @@ class GerenciarCarroPageState extends State<GerenciarCarroPage> {
               ),
               SearchField<DonoModel>(
                 initialValue: SearchFieldListItem<DonoModel>(
-                  dono.nome as String,
-                  item: dono,
-                  child: Text(dono.nome as String)
+                  carro.dono!.nome!,
+                  item: carro.dono,
+                  child: Text(carro.dono!.nome!)
                 ),
                 suggestions: (donos!)
                   .map(
@@ -97,9 +91,7 @@ class GerenciarCarroPageState extends State<GerenciarCarroPage> {
                   labelText: 'Dono',
                   border: OutlineInputBorder()
                 ),
-                onSuggestionTap: (e) {
-                  dono = e.item as DonoModel;
-                },
+                onSuggestionTap: (e) => carro.dono = e.item,
               ),
               const SizedBox(
                 height: 5,

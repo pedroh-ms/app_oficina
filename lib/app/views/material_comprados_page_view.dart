@@ -2,9 +2,10 @@ import 'package:app_oficina/app/controllers/material_comprados_page_controller.d
 import 'package:app_oficina/app/views/gerenciar_material_comprado_page_view.dart';
 import 'package:app_oficina/app/views/inserir_material_comprado_page_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MaterialCompradosPage extends StatefulWidget {
+  const MaterialCompradosPage({super.key});
+
   @override
   MaterialCompradosPageState createState() {
     return MaterialCompradosPageState();
@@ -95,7 +96,7 @@ class MaterialCompradosPageState extends State<MaterialCompradosPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => InserirMaterialCompradoPage()
+            builder: (context) => const InserirMaterialCompradoPage()
           )
         ),
         child: const Icon(Icons.add)

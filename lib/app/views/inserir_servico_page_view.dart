@@ -22,10 +22,8 @@ class InserirServicoPage extends StatefulWidget {
 class InserirServicoPageState extends State<InserirServicoPage> {
   
   final servico = ServicoModel();
-  late CarroModel carro;
   List<CarroModel>? carros;
   List<CarroModel>? carrosSF;
-  late DonoModel dono;
   List<DonoModel>? donos;
   List<DonoModel>? donosSF;
 
@@ -43,7 +41,7 @@ class InserirServicoPageState extends State<InserirServicoPage> {
   Future<void> _showDataEntregaDatePicker() async {
     showDatePicker(
       context: context,
-      initialDate: servico.dataEntrega != '' ? DateTime.parse(servico.dataEntrega!) : DateTime.now(),
+      initialDate: servico.dataEntrega != '' && servico.dataEntrega != null ? DateTime.parse(servico.dataEntrega!) : DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101)
     ).then(
@@ -121,7 +119,7 @@ class InserirServicoPageState extends State<InserirServicoPage> {
                   border: OutlineInputBorder()
                 ),
                 readOnly: true,
-                onTap: () async => _showDataEntregaDatePicker()
+                onTap: () async => await _showDataEntregaDatePicker()
               ),
               const SizedBox(
                 height: 5,

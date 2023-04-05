@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'donos_page_view.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   HomePageState createState() => HomePageState();
 }
@@ -15,47 +17,47 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
       ),
       drawer: Drawer(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ListTile(
-              title: Text('Donos'),
-              subtitle: Text('Gerenciar ou adicionar donos'),
+              title: const Text('Donos'),
+              subtitle: const Text('Gerenciar ou adicionar donos'),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DonosPage()
+                  builder: (context) => const DonosPage()
                 )
               ),
             ),
             ListTile(
-              title: Text('Carros'),
-              subtitle: Text('Gerenciar ou adicionar carros'),
+              title: const Text('Carros'),
+              subtitle: const Text('Gerenciar ou adicionar carros'),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CarrosPage()
+                  builder: (context) => const CarrosPage()
                 )
               ),
             ),
             ListTile(
-              title: Text('Servicos'),
-              subtitle: Text('Gerenciar ou adicionar servicos'),
+              title: const Text('Servicos'),
+              subtitle: const Text('Gerenciar ou adicionar servicos'),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => ServicosPage()
+                  builder: (context) => const ServicosPage()
                 )
               )
             ),
             ListTile(
-              title: Text('Materiais comprados'),
-              subtitle: Text('Gerenciar ou acicionar materiais comprados'),
+              title: const Text('Materiais comprados'),
+              subtitle: const Text('Gerenciar ou acicionar materiais comprados'),
               onTap:() => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => MaterialCompradosPage())
+                  builder: (context) => const MaterialCompradosPage())
               ),
             )
           ],

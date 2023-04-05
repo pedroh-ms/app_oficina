@@ -32,12 +32,7 @@ class ServicosPageState extends State<ServicosPage> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => GerenciarServicoPage(
-              id: servico.id,
-              dataEntrega: servico.dataEntrega,
-              preco: servico.preco,
-              observacao: servico.observacao,
-              carro: servico.carro,
-              dono: servico.dono,
+              servico: servico,
               carros: carros,
               donos: donos
             )

@@ -52,7 +52,7 @@ class InserirMaterialCompradoPageState extends State<InserirMaterialCompradoPage
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                onChanged: (nome) => materialComprado.nome = nome,
+                onChanged: (text) => materialComprado.nome = text,
                 decoration: const InputDecoration(
                   labelText: 'Nome',
                   border: OutlineInputBorder()

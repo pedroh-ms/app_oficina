@@ -1,3 +1,5 @@
+import 'package:app_oficina/app/models/servico_model.dart';
+
 import 'carro_model.dart';
 import 'dono_model.dart';
 
@@ -40,4 +42,13 @@ class ServicoDonoCarroModel {
     data['preco'] = this.preco;
     return data;
   }
+
+  ServicoModel toServicoModel() => ServicoModel.fromJson({
+    'id': id,
+    'data_entrega': dataEntrega,
+    'preco': preco,
+    'observacao': observacao,
+    'dono_id': dono!.id,
+    'carro_id': carro!.id
+  });
 }
