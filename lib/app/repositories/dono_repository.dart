@@ -1,11 +1,12 @@
 import 'dart:convert';
-
+import 'package:app_oficina/app/globals.dart';
+import 'package:app_oficina/app/models/dono_model.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import '../models/dono_model.dart';
 
 class DonoRepository {
 
-  final _url = '192.168.0.105:4000';
+  final _url = GetIt.I<Globals>().url;
   final _urn = 'api/donos';
 
   Future<List<DonoModel>> get() async {
