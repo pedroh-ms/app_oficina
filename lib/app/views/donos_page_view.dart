@@ -39,7 +39,7 @@ class DonosPageState extends State<DonosPage> {
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-              width: 500,
+              width: 700,
               child: ListView(
                 scrollDirection: Axis.vertical,
                 children: [

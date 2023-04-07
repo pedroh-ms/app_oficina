@@ -1,5 +1,8 @@
 import 'package:app_oficina/app/controllers/login_page_controller.dart';
+import 'package:app_oficina/app/globals.dart';
+import 'package:app_oficina/app/views/config_page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'home_page_view.dart';
 
 class LoginPage extends StatefulWidget {
@@ -19,7 +22,7 @@ class LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     _loginPageController.permitirLogin(usuario, senha).then(
       (allow) {
-        if (allow) {
+        if (allow && GetIt.I<Globals>().isConfigured) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const HomePage()
@@ -28,6 +31,14 @@ class LoginPageState extends State<LoginPage> {
         }
       }
     );    
+  }
+
+  void _config() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ConfigPage()
+      )
+    );
   }
 
   @override
@@ -73,9 +84,19 @@ class LoginPageState extends State<LoginPage> {
             const SizedBox(
               height: 15,
             ),
-            ElevatedButton(
-              onPressed: () async => await _login(), 
-              child: const Text('Entrar')
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async => await _login(), 
+                  child: const Text('Entrar')
+                ),
+                const SizedBox(width: 5),
+                ElevatedButton(
+                  onPressed: () => _config(), 
+                  child: const Text('Configurar')
+                )
+              ],
             )
           ],
         )
