@@ -13,7 +13,6 @@ class GerenciarDonoPage extends StatefulWidget {
 }
 
 class GerenciarDonoPageState extends State<GerenciarDonoPage> {
-
   late DonoModel dono;
 
   final _nomeController = TextEditingController();

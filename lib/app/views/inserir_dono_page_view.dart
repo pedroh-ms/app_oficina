@@ -10,7 +10,6 @@ class InserirDonoPage extends StatefulWidget {
 }
 
 class InserirDonoPageState extends State<InserirDonoPage> {
-
   final dono = DonoModel();
 
   final _inserirDonoPageController = InserirDonoPageController();
