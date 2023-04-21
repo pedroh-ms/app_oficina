@@ -14,23 +14,22 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
 
-  String usuario = '';
-  String senha = '';
-
   final _loginPageController = LoginPageController();
 
   Future<void> _login() async {
-    _loginPageController.permitirLogin(usuario, senha).then(
-      (allow) {
-        if (allow && GetIt.I<Globals>().isConfigured) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const HomePage()
-            )
-          );
+    if (GetIt.I<Globals>().isConfigured) {
+      _loginPageController.permitirLogin().then(
+        (allow) {
+          if (allow) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomePage()
+              )
+            );
+          }
         }
-      }
-    );    
+      );
+    }
   }
 
   void _config() {
@@ -61,7 +60,7 @@ class LoginPageState extends State<LoginPage> {
             ),
             TextField(
               onChanged: (text) {
-                usuario = text;
+                _loginPageController.usuario = text;
               },
               decoration: const InputDecoration(
                 labelText: 'Usuário',
@@ -73,7 +72,7 @@ class LoginPageState extends State<LoginPage> {
             ),
             TextField(
               onChanged: (text) {
-                senha = text;
+                _loginPageController.senha = text;
               },
               obscureText: true,
               decoration: const InputDecoration(
