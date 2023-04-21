@@ -10,16 +10,27 @@ import 'package:app_oficina/app/models/servico_model.dart';
 class ServicoRepository {
 
   final _url = GetIt.I<Globals>().url;
+  final token = GetIt.I<Globals>().token;
   final _urn = 'api/servicos';
 
   Future<List<ServicoModel>> get() async {
-    final response = await http.get(Uri.http(_url, _urn));
+    final response = await http.get(
+      Uri.http(_url, _urn),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
     List<ServicoModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => ServicoModel.fromJson(json)).toList();
     return donos;
   }
 
   Future<List<ServicoDonoCarroModel>> getWithDonosCarros() async {
-    final response = await http.get(Uri.http(_url, _urn, { 'query_type': 'with_donos_carros' }));
+    final response = await http.get(
+      Uri.http(_url, _urn, { 'query_type': 'with_donos_carros' }),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
     List<ServicoDonoCarroModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => ServicoDonoCarroModel.fromJson(json)).toList();
     return donos;
   }
@@ -30,7 +41,8 @@ class ServicoRepository {
     await http.post(
       Uri.http(_url, _urn),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'servico': body
@@ -45,7 +57,8 @@ class ServicoRepository {
     await http.put(
       Uri.http(_url, '$_urn/${dono.id}'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'servico': body
@@ -55,6 +68,11 @@ class ServicoRepository {
   }
 
   Future<void> delete(int id) async {
-    await http.delete(Uri.http(_url, '$_urn/$id'));
+    await http.delete(
+      Uri.http(_url, '$_urn/$id'),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
   }
 }

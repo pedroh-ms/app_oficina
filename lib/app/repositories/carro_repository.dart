@@ -9,16 +9,27 @@ import 'package:app_oficina/app/models/carro_model.dart';
 class CarroRepository {
 
   final _url = GetIt.I<Globals>().url;
+  final token = GetIt.I<Globals>().token;
   final _urn = 'api/carros';
 
   Future<List<CarroModel>> get() async {
-    final response = await http.get(Uri.http(_url, _urn));
+    final response = await http.get(
+      Uri.http(_url, _urn),
+      headers: {
+        'Authorization': 'Bearer $token',
+      }
+    );
     List<CarroModel> carros = (jsonDecode(response.body)['data'] as List).map((json) => CarroModel.fromJson(json)).toList();
     return carros;
   }
 
   Future<List<CarroDonoModel>> getWithDonos() async {
-    final response = await http.get(Uri.http(_url, _urn, {'query_type': 'with_donos'}));
+    final response = await http.get(
+      Uri.http(_url, _urn, {'query_type': 'with_donos'}),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
     List<CarroDonoModel> carros = (jsonDecode(response.body)['data'] as List).map((json) => CarroDonoModel.fromJson(json)).toList();
     return carros;
   }
@@ -29,7 +40,8 @@ class CarroRepository {
     await http.post(
       Uri.http(_url, _urn),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'carro': body
@@ -44,7 +56,8 @@ class CarroRepository {
     await http.put(
       Uri.http(_url, '$_urn/${carro.id}'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'carro': body
@@ -54,6 +67,11 @@ class CarroRepository {
   }
 
   Future<void> delete(int id) async {
-    await http.delete(Uri.http(_url, '$_urn/$id'));
+    await http.delete(
+      Uri.http(_url, '$_urn/$id'),
+      headers: {
+        'Authorization': 'Bearer $token'
+      })
+    ;
   }
 }

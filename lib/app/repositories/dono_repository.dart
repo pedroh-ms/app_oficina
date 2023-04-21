@@ -7,10 +7,16 @@ import 'package:http/http.dart' as http;
 class DonoRepository {
 
   final _url = GetIt.I<Globals>().url;
+  final token = GetIt.I<Globals>().token;
   final _urn = 'api/donos';
 
   Future<List<DonoModel>> get() async {
-    final response = await http.get(Uri.http(_url, _urn));
+    final response = await http.get(
+      Uri.http(_url, _urn),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
     List<DonoModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => DonoModel.fromJson(json)).toList();
     return donos;
   }
@@ -21,7 +27,8 @@ class DonoRepository {
     await http.post(
       Uri.http(_url, _urn),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'dono': body
@@ -36,7 +43,8 @@ class DonoRepository {
     await http.put(
       Uri.http(_url, '$_urn/${dono.id}'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'dono': body
@@ -46,6 +54,11 @@ class DonoRepository {
   }
 
   Future<void> delete(int id) async {
-    await http.delete(Uri.http(_url, '$_urn/$id'));
+    await http.delete(
+      Uri.http(_url, '$_urn/$id'),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
   }
 }

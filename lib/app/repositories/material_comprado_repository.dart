@@ -9,10 +9,16 @@ import 'package:app_oficina/app/models/material_comprado_model.dart';
 class MaterialCompradoRepository {
 
   final _url = GetIt.I<Globals>().url;
+  final token = GetIt.I<Globals>().token;
   final _urn = 'api/material_comprados';
 
   Future<List<MaterialCompradoModel>> get() async {
-    final response = await http.get(Uri.http(_url, _urn));
+    final response = await http.get(
+      Uri.http(_url, _urn),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
     List<MaterialCompradoModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => MaterialCompradoModel.fromJson(json)).toList();
     return donos;
   }
@@ -23,7 +29,8 @@ class MaterialCompradoRepository {
     await http.post(
       Uri.http(_url, _urn),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'material_comprado': body
@@ -38,7 +45,8 @@ class MaterialCompradoRepository {
     await http.put(
       Uri.http(_url, '$_urn/${dono.id}'),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, Map>{
         'material_comprado': body
@@ -48,6 +56,11 @@ class MaterialCompradoRepository {
   }
 
   Future<void> delete(int id) async {
-    await http.delete(Uri.http(_url, '$_urn/$id'));
+    await http.delete(
+      Uri.http(_url, '$_urn/$id'),
+      headers: {
+        'Authorization': 'Bearer $token'
+      }
+    );
   }
 }
