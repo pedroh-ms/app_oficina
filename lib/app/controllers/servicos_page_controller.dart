@@ -1,5 +1,6 @@
 import 'package:app_oficina/app/repositories/carro_repository.dart';
 import 'package:app_oficina/app/repositories/dono_repository.dart';
+import 'package:app_oficina/app/toast.dart';
 import 'package:flutter/widgets.dart';
 
 import '../models/carro_model.dart';
@@ -12,16 +13,30 @@ class ServicosPageController {
 
   Future start() async {
     final repository = ServicoRepository();
-    servicos.value = await repository.getWithDonosCarros();
+    try {
+      servicos.value = await repository.getWithDonosCarros();
+    } catch (e) {
+      errorToast(e.toString());
+    }
   }
 
   Future<List<DonoModel>> getDonos() async {
     final repository = DonoRepository();
-    return await repository.get();
+    try {
+      return await repository.get();
+    } catch (e) {
+      errorToast(e.toString());
+      return [];
+    }
   }
 
   Future<List<CarroModel>> getCarros() async {
     final repository = CarroRepository();
-    return await repository.get();
+    try {
+      return await repository.get();
+    } catch (e) {
+      errorToast(e.toString());
+      return [];
+    }
   }
 }

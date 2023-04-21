@@ -1,17 +1,36 @@
-
 import 'dart:convert';
 import 'package:app_oficina/app/globals.dart';
 import 'package:app_oficina/app/models/servico_dono_carro_model.dart';
+import 'package:app_oficina/app/toast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_oficina/app/models/servico_model.dart';
 
 
 class ServicoRepository {
-
   final _url = GetIt.I<Globals>().url;
   final token = GetIt.I<Globals>().token;
   final _urn = 'api/servicos';
+
+  void _errorToast({int? code}) {
+    String msg = 'Mensagem não definida para o código $code.';
+    switch(code) {
+      case 401: {
+        msg = 'Não autorizado!';
+      }
+      break;
+      case 500: {
+        msg = 'Erro interno do servidor.';
+      }
+      break;
+      case null: {
+        msg = 'Erro não tratado.';
+      }
+      break;
+      default: break;
+    }
+    errorToast(msg);
+  }
 
   Future<List<ServicoModel>> get() async {
     final response = await http.get(
@@ -20,8 +39,13 @@ class ServicoRepository {
         'Authorization': 'Bearer $token'
       }
     );
-    List<ServicoModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => ServicoModel.fromJson(json)).toList();
-    return donos;
+    if (response.statusCode == 200) {
+      List<ServicoModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => ServicoModel.fromJson(json)).toList();
+      return donos;
+    } else {
+      _errorToast(code: response.statusCode);
+      return [];
+    }
   }
 
   Future<List<ServicoDonoCarroModel>> getWithDonosCarros() async {
@@ -31,14 +55,19 @@ class ServicoRepository {
         'Authorization': 'Bearer $token'
       }
     );
-    List<ServicoDonoCarroModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => ServicoDonoCarroModel.fromJson(json)).toList();
-    return donos;
+    if (response.statusCode == 200) {
+      List<ServicoDonoCarroModel> donos = (jsonDecode(response.body)['data'] as List).map((json) => ServicoDonoCarroModel.fromJson(json)).toList();
+      return donos;
+    } else {
+      _errorToast(code: response.statusCode);
+      return [];
+    }
   }
 
   Future<void> post(ServicoModel dono) async {
     var body = dono.toJson();
     body.remove('id');
-    await http.post(
+    final response = await http.post(
       Uri.http(_url, _urn),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -49,12 +78,17 @@ class ServicoRepository {
         }
       )
     );
+    if (response.statusCode == 201) {
+      toast('Servico inserido!');
+    } else {
+      _errorToast(code: response.statusCode);
+    }
   }
 
   Future<void> put(ServicoModel dono) async {
     var body = dono.toJson();
     body.remove('id');
-    await http.put(
+    final response = await http.put(
       Uri.http(_url, '$_urn/${dono.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -65,14 +99,24 @@ class ServicoRepository {
         }
       )
     );
+    if (response.statusCode == 200) {
+      toast('Servico alterado!');
+    } else {
+      _errorToast(code: response.statusCode);
+    }
   }
 
   Future<void> delete(int id) async {
-    await http.delete(
+    final response = await http.delete(
       Uri.http(_url, '$_urn/$id'),
       headers: {
         'Authorization': 'Bearer $token'
       }
     );
+    if (response.statusCode == 204) {
+      toast('Servico removido!');
+    } else {
+      _errorToast(code: response.statusCode);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:app_oficina/app/controllers/login_page_controller.dart';
 import 'package:app_oficina/app/globals.dart';
+import 'package:app_oficina/app/toast.dart';
 import 'package:app_oficina/app/views/config_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -17,6 +18,14 @@ class LoginPageState extends State<LoginPage> {
   final _loginPageController = LoginPageController();
 
   Future<void> _login() async {
+    if (_loginPageController.usuario?.isEmpty ?? true) {
+      errorToast('Insira um usuário!');
+      return;
+    }
+    if (_loginPageController.senha?.isEmpty ?? true) {
+      errorToast('Insira a senha!');
+      return;
+    }
     if (GetIt.I<Globals>().isConfigured) {
       _loginPageController.permitirLogin().then(
         (allow) {
@@ -29,6 +38,8 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       );
+    } else {
+      errorToast('Defina as configurações de rede!');
     }
   }
 

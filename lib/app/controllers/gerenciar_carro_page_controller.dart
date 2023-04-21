@@ -1,25 +1,24 @@
+import 'package:app_oficina/app/toast.dart';
+
 import '../models/carro_model.dart';
 import '../repositories/carro_repository.dart';
 
 class GerenciarCarroPageController {
-
-  Future<bool> save(Map<String, dynamic> carro) async {
+  Future save(Map<String, dynamic> carro) async {
     final repository = CarroRepository();
     try {
       await repository.put(CarroModel.fromJson(carro));
-      return true;
     } catch (e) {
-      return false;
+      errorToast(e.toString());
     }
   }
 
-  Future<bool> delete(int id) async {
+  Future delete(int id) async {
     final repository = CarroRepository();
     try {
       await repository.delete(id);
-      return true;
     } catch (e) {
-      return false;
+      toast(e.toString());
     }
   }
 }
